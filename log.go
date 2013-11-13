@@ -47,6 +47,10 @@ func Fatalf(format string, v ...interface{}) {
 	os.Exit(1)
 }
 
+func Fatal0(format string, v ...interface{}) {
+	std.Output(2, fmt.Sprintf("FATAL -- "+format, v...)+"\n"+string(debug.Stack()))
+}
+
 func (l *Logger) Info(v ...interface{}) {
 	l.Output(2, "INFO -- "+fmt.Sprint(v...))
 }
@@ -81,6 +85,12 @@ func (l *Logger) Fatal(v ...interface{}) {
 func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.Output(2, fmt.Sprintf("FATAL -- "+format, v...)+"\n"+string(debug.Stack()))
 	os.Exit(1)
+}
+
+// Fatal0 is like Fatalf, but does not exit (useful to performing cleanup
+// routines after displaying the fatal message)
+func (l *Logger) Fatal0(format string, v ...interface{}) {
+	l.Output(2, fmt.Sprintf("FATAL -- "+format, v...)+"\n"+string(debug.Stack()))
 }
 
 func New() *Logger {
